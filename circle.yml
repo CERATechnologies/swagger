@@ -1,3 +1,11 @@
+machine:
+  timezone:
+    Australia/Melbourne
+
+test:
+  override:
+    - echo "test"
+
 deployment:
   prod:
     branch: master
