@@ -35,7 +35,7 @@ paths:
             type: string
       responses:
         200:
-          description: Success
+          description: Success with api_token to be used in subsequent requests
         401:
           description: Unauthorized
         406:
@@ -64,8 +64,9 @@ paths:
           description: Unauthorized
         406:
           description: Not Acceptable
-        default:
-          description: Unexpected Error
+      security:
+        - api_token: []
+
   /referral_requests/{id}.json:
     get:
       summary: Retrieve a referral request
@@ -83,12 +84,22 @@ paths:
       responses:
         200:
           description: Success
+          schema:
+            $ref: "#/definitions/ReferralRequest"
         401:
           description: Unauthorized
         403:
           description: Forbidden
         404:
           description: Not Found
+      security:
+        - api_token: []
+
+securityDefinitions:
+  api_token:
+    type: apiKey
+    name: api_token
+    in: query
 
 definitions:
   ReferralRequest:
@@ -101,10 +112,8 @@ definitions:
         description: Sending system's reference to this referral - this can be a json object or a string
       patient_request:
         $ref: "#/definitions/PatientRequest"
-        description: Patient data
       clinical_data:
         $ref: "#/definitions/ClinicalData"
-        description: Clinical data
       message:
         type: string
         description: The referral message
