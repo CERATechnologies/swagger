@@ -99,7 +99,7 @@ securityDefinitions:
   api_token:
     type: apiKey
     name: api_token
-    in: query
+    in: header
 
 definitions:
   ReferralRequest:
