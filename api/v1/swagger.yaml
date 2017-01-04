@@ -1,0 +1,373 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Oculo API
+host: api.oculo.com.au
+basePath: /api/v1
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /auth:
+    post:
+      summary: Authenticate against the Oculo API using your access credentials
+      parameters:
+        - name: client_id
+          in: body
+          description: Your API client ID (specsavers)
+          required: true
+          schema:
+            type: string
+        - name: access_key
+          in: body
+          description: Your Oculo integration access key
+          required: true
+          schema:
+            type: string
+        - name: access_secret
+          in: body
+          description: Your Oculo integration access secret
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+        401:
+          description: Unauthorized
+        406:
+          description: Not Acceptable
+        default:
+          description: Unexpected Error
+  /referral_requests:
+    post:
+      summary: Submit a referral
+      parameters:
+        - name: authorization_token
+          in: header
+          description: Authentication token
+          required: true
+          type: string
+        - name: referral_request
+          in: body
+          description: The referral request
+          required: true
+          schema:
+            $ref: "#/definitions/ReferralRequest"
+      responses:
+        201:
+          description: Success
+        401:
+          description: Unauthorized
+        406:
+          description: Not Acceptable
+        default:
+          description: Unexpected Error
+  /referral_requests/{id}.json:
+    get:
+      summary: Retrieve a referral request
+      parameters:
+        - name: authorization_token
+          in: header
+          description: Authentication token
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: The referral request id
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+
+definitions:
+  ReferralRequest:
+    properties:
+      sender_system:
+        type: string
+        description: Identifier of sending system - Socrates
+      sender_system_references:
+        type: object
+        description: Sending system's reference to this referral - this can be a json object or a string
+      patient_request:
+        $ref: "#/definitions/PatientRequest"
+        description: Patient data
+      clinical_data:
+        $ref: "#/definitions/ClinicalData"
+        description: Clinical data
+      message:
+        type: string
+        description: The referral message
+      cataract_assessment:
+        type: boolean
+        description: Cataract assessment
+      glaucoma_assessment:
+        type: boolean
+        description: Glaucoma assessment
+      medical_retina_assessment:
+        type: boolean
+        description: Medical retina assessment
+      diabetic_eye_assessment:
+        type: boolean
+        description: Diabetic eye assessment
+      other_assessment:
+        type: boolean
+        description: Other assessment
+  PatientRequest:
+    properties:
+      title:
+        type: string
+        description: Title
+        enum:
+          - Mr
+          - Ms
+          - Miss
+          - Mrs
+          - Dr
+          - Assoc Prof
+          - Prof
+      first_name:
+        type: string
+        description: First name
+      surname:
+        type: string
+        description: Surname
+      date_of_birth:
+        type: string
+        description: Date of birth (dd/mm/yyyy)
+      sex:
+        type: string
+        description: Sex
+        enum:
+          - male
+          - female
+      street_address:
+        type: string
+        description: Street address
+      suburb:
+        type: string
+        description: Suburb
+      state:
+        type: string
+        description: State
+      postcode:
+        type: string
+        description: Postcode
+      country_code:
+        type: string
+        description: Country code
+        enum:
+          - AU
+          - NZ
+      email_address:
+        type: string
+        description: Email address
+      contact_number:
+        type: string
+        description: Contact number
+      hypertension:
+        type: boolean
+        description: Patient has hypertension
+      asthma:
+        type: boolean
+        description: Patient has asthma
+      diabetes:
+        type: boolean
+        description: Patient has diabetes
+      diabetes_year_diagnosed:
+        type: string
+        description: The year the patient was diagnosed with diabetes
+      diabetes_hba1c:
+        type: integer
+        description: HbA1c (%)
+      diabetes_type:
+        type: string
+        description: Diabetes Type
+        enum:
+          - I
+          - II
+      diabetes_control:
+        type: string
+        description: Diabetes Control
+        enum:
+          - Good
+          - Moderate
+          - Poor
+      other_pmh:
+        type: string
+        description: Other Medical History
+      current_medication:
+        type: string
+        description: Current Medication
+      eye_drop_intolerance:
+        type: string
+        description: Eye Drop Tollerance
+      family_social_history:
+        type: string
+        description: Family/Social History
+      allergies:
+        type: string
+        description: Allergies
+      medicare_irn:
+        type: string
+        description: Medicare IRN
+      medicare_card_number:
+        type: string
+        description: Medicare Number
+  ClinicalData:
+    properties:
+      surgical_history:
+        type: string
+        description: Surgical History
+      desired_refraction_right:
+        type: integer
+        description: Desired Refraction Right Eye
+      desired_refraction_left:
+        type: integer
+        description: Desired Refraction Left Eye
+      max_iop_right:
+        type: integer
+        description: Maximum IOP Right Eye
+      max_iop_left:
+        type: integer
+        description: Maximum IOP Left Eye
+      other_risk_factors:
+        type: string
+        description: Other Risk Factors
+      va_blind_control_right:
+        type: boolean
+        description: VA Blindess Right Eye (Less than 6/60)
+      va_blind_control_left:
+        type: boolean
+        description: VA Blindess Left Eye (Less than 6/60)
+      va_blindness_right:
+        type: string
+        description: VA Blindess Right Eye  Value (Less than 6/60)
+        enum:
+          - CF
+          - HM
+          - PL
+          - NPL
+          - No Eye
+      va_blindness_left:
+        type: string
+        description: VA Blindess Left Eye Value (Less than 6/60)
+        enum:
+          - CF
+          - HM
+          - PL
+          - NPL
+          - No Eye
+      patient_va_right:
+        type: integer
+        description: Visual Acuity Right Eye (Over 6/60)
+      patient_va_left:
+        type: integer
+        description: Visual Acuity Left Eye (Over 6/60)
+      patient_va_right_modifier:
+        type: integer
+        description: Visual Acuity Right Eye with modifier (Over 6/60)
+      patient_va_left_modifier:
+        type: integer
+        description: Visual Acuity Left Eye with modifier (Over 6/60)
+      current_iop_right:
+        type: integer
+        description: Current IOP Right Eye
+      current_iop_left:
+        type: integer
+        description: Current IOP Left Eye
+      diabetic_retinopathy_right:
+        type: string
+        description: Diabetic Retinopathy Right Eye
+        enum:
+          - None
+          - Minimal
+          - Mild-Moderate NPDR
+          - Severe NPDR
+          - PDR
+      diabetic_retinopathy_left:
+        type: string
+        description: Diabetic Retinopathy Left Eye
+        enum:
+          - None
+          - Minimal
+          - Mild-Moderate NPDR
+          - Severe NPDR
+          - PDR
+      macular_oedema_right:
+        type: boolean
+        description: Macular Oedema Right Eye
+      macular_oedema_left:
+        type: boolean
+        description: Macular Oedema Left Eye
+      cataract_description_right:
+        type: string
+        description: Cataract Description Right Eye
+      cataract_description_left:
+        type: string
+        description: Cataract Description Left Eye
+      family_history_of_glaucoma:
+        type: boolean
+        description: Family History of Glaucoma
+      gonio_findings_right:
+        type: string
+        description: Gonio Findings Right Eye
+      gonio_findings_left:
+        type: string
+        description: Gonio Findings Left Eye
+      refraction_right:
+        type: string
+        description: Refraction Right Eye
+      refraction_left:
+        type: string
+        description: Refraction Left Eye
+      central_corneal_thickness_right:
+        type: integer
+        description: Central Corneal Thickness Right Eye
+      central_corneal_thickness_left:
+        type: integer
+        description: Central Corneal Thickness Right Eye
+      recent_vision_change_right:
+        type: boolean
+        description: Recent Vision Change Right Eye
+      recent_vision_change_left:
+        type: boolean
+        description: Recent Vision Change Left Eye
+      change_on_amsler_right:
+        type: boolean
+        description: Change on Amsler Right Eye
+      change_on_amsler_left:
+        type: boolean
+        description: Change on Amsler Left Eye
+      retinal_findings_right:
+        type: string
+        description: Retinal Findings Right Eye
+      retinal_findings_left:
+        type: string
+        description: Retinal Findings Left Eye
+      amd_right:
+        type: string
+        description: AMD Right Eye
+        enum:
+          - Early
+          - Intermediate
+          - Late with Atrophy
+          - New Onset Wet
+      amd_left:
+        type: string
+        description: AMD Left Eye
+        enum:
+          - Early
+          - Intermediate
+          - Late with Atrophy
+          - New Onset Wet
