@@ -233,6 +233,10 @@ definitions:
       medicare_card_number:
         type: string
         description: Medicare Number
+      providers:
+        type: array
+        items:
+          $ref: "#/definitions/Provider"
   ClinicalData:
     properties:
       surgical_history:
@@ -380,3 +384,52 @@ definitions:
           - Intermediate
           - Late with Atrophy
           - New Onset Wet
+  Provider:
+    properties:
+      role:
+        type: string
+        description: The role of this provider in the patient's care (eg GP, Endocrinologist, etc)
+      title:
+        type: string
+        description: todo
+      first_name:
+        type: string
+        description: todo
+      surname:
+        type: string
+        description: todo
+      practice:
+        $ref: "#/definitions/Practice"
+  Practice:
+    properties:
+      name:
+        type: string
+        description: todo
+      address_line_1:
+        type: string
+        description: todo
+      address_line_2:
+        type: string
+        description: todo
+      suburb:
+        type: string
+        description: todo
+      state:
+        type: string
+        description: todo
+      postcode:
+        type: string
+        description: todo
+      phone:
+        type: string
+        description: todo
+      fax:
+        type: string
+        description: todo
+      email:
+        type: string
+        description: todo
+      website:
+        type: string
+        description: todo
+
