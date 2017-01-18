@@ -216,7 +216,7 @@ definitions:
         type: string
         description: Other Medical History
       current_medication:
-        type: string
+        type: array
         description: Current Medication
       eye_drop_intolerance:
         type: string
@@ -225,7 +225,7 @@ definitions:
         type: string
         description: Family/Social History
       allergies:
-        type: string
+        type: array
         description: Allergies
       medicare_irn:
         type: string
