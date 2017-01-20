@@ -219,7 +219,7 @@ definitions:
         type: array
         description: Current Medication
         items:
-          type: String
+          type: string
       eye_drop_intolerance:
         type: string
         description: Eye Drop Tollerance
@@ -230,7 +230,7 @@ definitions:
         type: array
         description: Allergies
         items:
-          type: String
+          type: string
       medicare_irn:
         type: string
         description: Medicare IRN
