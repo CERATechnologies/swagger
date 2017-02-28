@@ -17,7 +17,7 @@ paths:
       parameters:
         - name: client_id
           in: body
-          description: Your API client ID (specsavers)
+          description: Your API client ID (eg specsavers)
           required: true
           schema:
             type: string
@@ -247,10 +247,10 @@ definitions:
         type: string
         description: Surgical History
       desired_refraction_right:
-        type: integer
+        type: string
         description: Desired Refraction Right Eye
       desired_refraction_left:
-        type: integer
+        type: string
         description: Desired Refraction Left Eye
       max_iop_right:
         type: integer
