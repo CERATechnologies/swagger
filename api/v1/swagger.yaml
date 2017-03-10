@@ -27,17 +27,39 @@ paths:
           required: true
           schema:
             type: string
-        - name: access_secret
+        - name: secret_key
           in: body
-          description: Your Oculo integration access secret
+          description: Your Oculo integration secret key
           required: true
           schema:
             type: string
       responses:
         200:
-          description: Success with api_token to be used in subsequent requests
+          description: New session created
+          schema:
+            type: object
+            required: [auth_token, expires_in, client_id]
+            properties:
+              auth_token:
+                description: Auth token to be used in subsequent requests
+                type: string
+              expires_in:
+                description: Time when this session expires
+                type: string
+              client_id:
+                description: Client ID
+                type: string
         401:
           description: Unauthorized
+          schema:
+            type: object
+            required: [errors]
+            properties:
+              errors:
+                description: List of error descriptions
+                type: array
+                items:
+                  type: string
         406:
           description: Not Acceptable
         default:
@@ -46,11 +68,6 @@ paths:
     post:
       summary: Submit a referral
       parameters:
-        - name: authorization_token
-          in: header
-          description: Authentication token
-          required: true
-          type: string
         - name: referral_request
           in: body
           description: The referral request
@@ -65,17 +82,12 @@ paths:
         406:
           description: Not Acceptable
       security:
-        - api_token: []
+        - bearer: []
 
   /referral_requests/{id}.json:
     get:
       summary: Retrieve a referral request
       parameters:
-        - name: authorization_token
-          in: header
-          description: Authentication token
-          required: true
-          type: string
         - name: id
           in: path
           description: The referral request id
@@ -93,12 +105,13 @@ paths:
         404:
           description: Not Found
       security:
-        - api_token: []
+        - bearer: []
 
 securityDefinitions:
-  api_token:
+  bearer:
     type: apiKey
-    name: api_token
+    description: A bearer token in the format "Bearer auth_token"
+    name: authorization
     in: header
 
 definitions:
