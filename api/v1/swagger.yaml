@@ -116,6 +116,10 @@ securityDefinitions:
 
 definitions:
   ReferralRequest:
+    required: [
+      sender_system,
+      patient_request
+    ]
     properties:
       sender_system:
         type: string
@@ -146,6 +150,11 @@ definitions:
         type: boolean
         description: Other assessment
   PatientRequest:
+    required: [
+      first_name,
+      surname,
+      date_of_birth
+    ]
     properties:
       title:
         type: string
