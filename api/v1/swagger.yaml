@@ -134,21 +134,11 @@ definitions:
       message:
         type: string
         description: The referral message
-      cataract_assessment:
-        type: boolean
-        description: Cataract assessment
-      glaucoma_assessment:
-        type: boolean
-        description: Glaucoma assessment
-      medical_retina_assessment:
-        type: boolean
-        description: Medical retina assessment
-      diabetic_eye_assessment:
-        type: boolean
-        description: Diabetic eye assessment
-      other_assessment:
-        type: boolean
-        description: Other assessment
+      reason:
+        type: array
+        description: Reason(s) for the referral (currently supports Glaucoma, Cataract,  Medical retinam, Diabetic eye and Other )
+        items:
+          type: string
   PatientRequest:
     required: [
       first_name,
