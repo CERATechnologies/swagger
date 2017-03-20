@@ -297,18 +297,24 @@ definitions:
           - PL
           - NPL
           - No Eye
+      normal_va_right:
+        type: integer
+        description: Normal Visual Acuity Right Eye (Over 6/60)
+      normal_va_left:
+        type: integer
+        description: Normal Visual Acuity Left Eye (Over 6/60)
       patient_va_right:
         type: integer
-        description: Visual Acuity Right Eye (Over 6/60)
+        description: Patient Visual Acuity Right Eye (Over 6/60)
       patient_va_left:
         type: integer
-        description: Visual Acuity Left Eye (Over 6/60)
+        description: Patient Visual Acuity Left Eye (Over 6/60)
       patient_va_right_modifier:
         type: integer
-        description: Visual Acuity Right Eye with modifier (Over 6/60)
+        description: Patient Visual Acuity Right Eye with modifier (Over 6/60)
       patient_va_left_modifier:
         type: integer
-        description: Visual Acuity Left Eye with modifier (Over 6/60)
+        description: Patient Visual Acuity Left Eye with modifier (Over 6/60)
       current_iop_right:
         type: integer
         description: Current IOP Right Eye
