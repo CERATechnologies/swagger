@@ -404,48 +404,48 @@ definitions:
     properties:
       role:
         type: string
-        description: The role of this provider in the patient's care (eg GP, Endocrinologist, etc)
+        description: The role of this Provider in the patient's care (eg GP, Endocrinologist, etc)
       title:
         type: string
-        description: todo
+        description: Title of this Provider
       first_name:
         type: string
-        description: todo
+        description: First name of this Provider
       surname:
         type: string
-        description: todo
+        description: Surname of this Provider
       practice:
         $ref: "#/definitions/Practice"
   Practice:
     properties:
       name:
         type: string
-        description: todo
+        description: Name of the Practice
       address_line_1:
         type: string
-        description: todo
+        description: Address line one for the Practice
       address_line_2:
         type: string
-        description: todo
+        description: Address line two for the Practice
       suburb:
         type: string
-        description: todo
+        description: Suburb for the Practice
       state:
         type: string
-        description: todo
+        description: State for the Practice
       postcode:
         type: string
-        description: todo
+        description: Postcode for the Practice
       phone:
         type: string
-        description: todo
+        description: Phone for the Practice
       fax:
         type: string
-        description: todo
+        description: Fax number for the Practice
       email:
         type: string
-        description: todo
+        description: Email for the Practice
       website:
         type: string
-        description: todo
+        description: Website for the Practice
 
