@@ -134,11 +134,6 @@ definitions:
       message:
         type: string
         description: The referral message
-      reason:
-        type: array
-        description: Reason(s) for the referral (currently supports Glaucoma, Cataract,  Medical retinam, Diabetic eye and Other )
-        items:
-          type: string
   PatientRequest:
     required: [
       first_name,
