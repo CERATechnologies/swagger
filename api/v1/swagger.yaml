@@ -128,8 +128,13 @@ definitions:
         type: object
         description: Sending system's reference to this referral - this can be a json object or a string
       patient_request:
+        description: Patient details
         $ref: "#/definitions/PatientRequest"
+      practice_role:
+        description: Practice role for which this referral is being created. If omitted the practice role attached to the current integration will be used
+        $ref: "#/definitions/PracticeRole"
       clinical_data:
+        description: Detailed clinical data for the referral
         $ref: "#/definitions/ClinicalData"
       message:
         type: string
@@ -248,6 +253,18 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/Provider"
+  PracticeRole:
+    required: [
+      industry_reference,
+      organisation_reference
+    ]
+    properties:
+      industry_reference:
+        type: string
+        description: Industry reference for the user that fulfills this role (may be AHPRA number)
+      organisation_reference:
+        type: string
+        description: Organisation internal reference for the practice that this role belongs to
   ClinicalData:
     properties:
       surgical_history:
