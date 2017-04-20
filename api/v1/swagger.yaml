@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.1.0
+  version: 1.1.1
   title: Oculo API
 host: api.oculo.com.au
 basePath: /api/v1
@@ -39,6 +39,7 @@ paths:
           schema:
             type: object
             required: [auth_token, expires_in, client_id]
+            title: Authorisation
             properties:
               auth_token:
                 description: Auth token to be used in subsequent requests
@@ -73,10 +74,12 @@ paths:
           description: The referral request
           required: true
           schema:
-            $ref: "#/definitions/ReferralRequest"
+            $ref: "#/definitions/ReferralRequestPayload"
       responses:
         201:
           description: Success
+          schema:
+            $ref: "#/definitions/ReferralRequestCreated"
         401:
           description: Unauthorized
         406:
@@ -115,11 +118,39 @@ securityDefinitions:
     in: header
 
 definitions:
+  ReferralRequestCreated:
+    required: [id, _links]
+    properties:
+      id:
+        description: Referral request identifier
+        type: string
+      _links:
+        type: object
+        title: Links
+        description: Links for the referral request
+        required: [self, edit_referral_request]
+        properties:
+          self:
+            schema:
+              required: true
+              description: Link to this referral request
+              $ref: "#/definitions/Link"
+          edit_referral_request:
+            schema:
+              required: true
+              description: Link to HTML edit page for this referral request
+              $ref: "#/definitions/Link"
   ReferralRequest:
-    required: [
-      sender_system,
-      patient_request
-    ]
+    allOf:
+      - $ref: "#/definitions/ReferralRequestCreated"
+    required: [payload]
+    properties:
+      payload:
+        schema:
+          description: Original referral request payload
+          $ref: "#/definitions/ReferralRequestPayload"
+  ReferralRequestPayload:
+    required: [sender_system, patient_request]
     properties:
       sender_system:
         type: string
@@ -139,12 +170,15 @@ definitions:
       message:
         type: string
         description: The referral message
+  Link:
+    required: [href]
+    type: object
+    properties:
+      href:
+        type: string
+        format: uri
   PatientRequest:
-    required: [
-      first_name,
-      surname,
-      date_of_birth
-    ]
+    required: [first_name, surname, date_of_birth]
     properties:
       title:
         type: string
