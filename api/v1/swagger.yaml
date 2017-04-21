@@ -15,24 +15,12 @@ paths:
     post:
       summary: Authenticate against the Oculo API using your access credentials
       parameters:
-        - name: client_id
+        - name: Credentials
           in: body
-          description: Your API client ID (eg specsavers)
+          description: Your Oculo API credentials
           required: true
           schema:
-            type: string
-        - name: access_key
-          in: body
-          description: Your Oculo integration access key
-          required: true
-          schema:
-            type: string
-        - name: secret_key
-          in: body
-          description: Your Oculo integration secret key
-          required: true
-          schema:
-            type: string
+            $ref: "#/definitions/Credentials"
       responses:
         200:
           description: New session created
@@ -116,8 +104,19 @@ securityDefinitions:
     description: A bearer token in the format "Bearer auth_token"
     name: authorization
     in: header
-
 definitions:
+  Credentials:
+    required: [client_id, access_key, secret_key]
+    properties:
+      client_id:
+        description: Your API client ID (eg specsavers)
+        type: string
+      access_key:
+        description: Your Oculo integration access key
+        type: string
+      secret_key:
+        description: Your Oculo integration secret key
+        type: string
   ReferralRequestCreated:
     required: [id, _links]
     properties:
@@ -131,24 +130,19 @@ definitions:
         required: [self, edit_referral_request]
         properties:
           self:
-            schema:
-              required: true
-              description: Link to this referral request
-              $ref: "#/definitions/Link"
+            description: Link to this referral request
+            $ref: "#/definitions/Link"
           edit_referral_request:
-            schema:
-              required: true
-              description: Link to HTML edit page for this referral request
-              $ref: "#/definitions/Link"
+            description: Link to HTML edit page for this referral request
+            $ref: "#/definitions/Link"
   ReferralRequest:
     allOf:
       - $ref: "#/definitions/ReferralRequestCreated"
     required: [payload]
     properties:
       payload:
-        schema:
-          description: Original referral request payload
-          $ref: "#/definitions/ReferralRequestPayload"
+        description: Original referral request payload
+        $ref: "#/definitions/ReferralRequestPayload"
   ReferralRequestPayload:
     required: [sender_system, patient_request]
     properties:
