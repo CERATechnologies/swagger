@@ -207,6 +207,7 @@ definitions:
         enum:
           - male
           - female
+          - unspecified
       street_address:
         type: string
         description: Street address
