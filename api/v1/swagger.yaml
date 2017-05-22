@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.1.5
+  version: 1.2.0
   title: Oculo API
 host: api.oculo.com.au
 basePath: /api/v1
@@ -61,6 +61,10 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/ReferralRequestCreated"
+        400:
+          description: The given request was not valid
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         401:
           description: The given auth_token was not authenticated
           schema:
@@ -189,9 +193,10 @@ definitions:
           - Ms
           - Miss
           - Mrs
-          - Dr
-          - Assoc Prof
-          - Prof
+          - Dr.
+          - Assoc.Prof
+          - Prof.
+          - Master
       first_name:
         type: string
         description: First name
@@ -222,10 +227,7 @@ definitions:
         description: Postcode
       country_code:
         type: string
-        description: Country code
-        enum:
-          - AU
-          - NZ
+        description: Country code, must be an alpha-2 code from within the set at https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
       email_address:
         type: string
         description: Email address
@@ -373,7 +375,6 @@ definitions:
         type: string
         description: Diabetic Retinopathy Right Eye
         enum:
-          - None
           - Minimal
           - Mild-Moderate NPDR
           - Severe NPDR
@@ -382,7 +383,6 @@ definitions:
         type: string
         description: Diabetic Retinopathy Left Eye
         enum:
-          - None
           - Minimal
           - Mild-Moderate NPDR
           - Severe NPDR
@@ -517,7 +517,7 @@ definitions:
     required: [errors]
     properties:
       errors:
-        description: Errors conforming to JSON API errors format http://http://jsonapi.org/format/#error-objects
+        description: Errors conforming to JSON API errors format http://jsonapi.org/format/#error-objects
         type: array
         items:
           $ref: "#/definitions/Error"
