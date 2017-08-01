@@ -111,7 +111,7 @@ paths:
 
 securityDefinitions:
   bearer:
-    type: apiToken
+    type: apiKey
     description: A bearer token in the format "Bearer auth_token"
     name: authorization
     in: header
