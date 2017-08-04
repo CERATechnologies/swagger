@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.2.0
+  version: 1.2.1
   title: Oculo API
 host: api.oculo.com.au
 basePath: /api/v1
@@ -188,15 +188,6 @@ definitions:
       title:
         type: string
         description: Title
-        enum:
-          - Mr
-          - Ms
-          - Miss
-          - Mrs
-          - Dr.
-          - Assoc.Prof
-          - Prof.
-          - Master
       first_name:
         type: string
         description: First name
