@@ -239,7 +239,7 @@ definitions:
         description: The year the patient was diagnosed with diabetes
       diabetes_hba1c:
         type: integer
-        description: HbA1c (%), accepts values between 0 and 99.99
+        description: HbA1c (%). Accepts values between 0 and 99.99
       diabetes_type:
         type: string
         description: Diabetes Type
@@ -342,16 +342,16 @@ definitions:
           - Not Assessed
       normal_va_right:
         type: integer
-        description: Normal Visual Acuity Right Eye (Over 6/60), accepts values between 0 and 999.9
+        description: Normal Visual Acuity Right Eye (Over 6/60). Accepts values between 0 and 999.9
       normal_va_left:
         type: integer
-        description: Normal Visual Acuity Left Eye (Over 6/60), accepts values between 0 and 999.9
+        description: Normal Visual Acuity Left Eye (Over 6/60). Accepts values between 0 and 999.9
       patient_va_right:
         type: integer
-        description: Patient Visual Acuity Right Eye (Over 6/60), accepts values between 0 and 99.9
+        description: Patient Visual Acuity Right Eye (Over 6/60). Accepts values between 0 and 99.9
       patient_va_left:
         type: integer
-        description: Patient Visual Acuity Left Eye (Over 6/60), accepts values between 0 and 99.9
+        description: Patient Visual Acuity Left Eye (Over 6/60). Accepts values between 0 and 99.9
       patient_va_right_modifier:
         type: string
         description: Patient Visual Acuity Right Eye with modifier (Over 6/60)
