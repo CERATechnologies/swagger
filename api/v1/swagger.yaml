@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.2.1
+  version: 1.2.2
   title: Oculo API
 host: api.oculo.com.au
 basePath: /api/v1
@@ -326,8 +326,8 @@ definitions:
         enum:
           - CF
           - HM
-          - PL
-          - NPL
+          - LP
+          - NLP
           - No Eye
           - Not Assessed
       va_blindness_left:
@@ -336,8 +336,8 @@ definitions:
         enum:
           - CF
           - HM
-          - PL
-          - NPL
+          - LP
+          - NLP
           - No Eye
           - Not Assessed
       normal_va_right:
