@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.2.2
+  version: 1.2.3
   title: Oculo API
 host: api.oculo.com.au
 basePath: /api/v1
@@ -340,6 +340,20 @@ definitions:
           - NLP
           - No Eye
           - Not Assessed
+      va_correction_right:
+        type: string
+        description: VA Correction Right Eye Value
+        enum:
+          - Aided
+          - Unaided
+          - Best Corrected
+      va_correction_left:
+        type: string
+        description: VA Correction Left Eye Value
+        enum:
+          - Aided
+          - Unaided
+          - Best Corrected
       normal_va_right:
         type: integer
         description: Normal Visual Acuity Right Eye (Over 6/60). Accepts values between 0 and 999.9
@@ -514,4 +528,3 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/Error"
-
