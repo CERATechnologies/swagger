@@ -1,0 +1,218 @@
+swagger: "2.0"
+info:
+  version: 1.2.3
+  title: Oculo Provider Directory API
+host: k7r7r6k5si.execute-api.ap-southeast-2.amazonaws.com
+basePath: /test
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  "/organisation":
+    get:
+      tags:
+      - Organization
+      parameters:
+      # - name: _language
+      #   type: string
+      #   in: query
+      #   description: The language of the resource
+      # - name: identifier
+      #   type: string
+      #   in: query
+      #   description: Any identifier for the organization (not the accreditation issuer's
+      #     identifier)
+      # - name: partof
+      #   type: string
+      #   in: query
+      #   description: An organization of which this organization forms a part
+      - name: address
+        type: string
+        in: query
+        description: A (part of the) address of the organization
+      # - name: address-state
+      #   type: string
+      #   in: query
+      #   description: A state specified in an address
+      # - name: active
+      #   type: string
+      #   in: query
+      #   description: A server defined search that may match any of the string fields
+      #     in the Address, including line, city, state, country, postalCode, and/or
+      #     text
+      # - name: type
+      #   type: string
+      #   in: query
+      #   description: A code for the type of organization
+      # - name: address-postalcode
+      #   type: string
+      #   in: query
+      #   description: A postal code specified in an address
+      # - name: address-country
+      #   type: string
+      #   in: query
+      #   description: A country specified in an address
+      # - name: endpoint
+      #   type: string
+      #   in: query
+      #   description: Technical endpoints providing access to services operated for
+      #     the organization
+      # - name: phonetic
+      #   type: string
+      #   in: query
+      #   description: A portion of the organization's name using some kind of phonetic
+      #     matching algorithm
+      # - name: address-use
+      #   type: string
+      #   in: query
+      #   description: A use code specified in an address
+      - name: name
+        type: string
+        in: query
+        description: A portion of the organization's name or alias
+      # - name: _id
+      #   type: string
+      #   in: query
+      #   description: The ID of the resource
+      # - name: address-city
+      #   type: string
+      #   in: query
+      #   description: A city specified in an address
+      # - name: _format
+      #   in: query
+      #   type: string
+      #   x-consoleDefault: application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/Organization"
+securityDefinitions:
+  bearer:
+    type: apiKey
+    description: A bearer token in the format "Bearer auth_token"
+    name: authorization
+    in: header
+definitions:
+  Organization:
+    description: ''
+    type: object
+    properties:
+      resourceType:
+        type: string
+        minLength: 1
+      id:
+        type: string
+        minLength: 1
+      text:
+        type: object
+        properties:
+          status:
+            type: string
+            minLength: 1
+          div:
+            type: string
+            minLength: 1
+        required:
+        - status
+        - div
+      extension:
+        type: array
+        uniqueItems: true
+        minItems: 1
+        items:
+          required:
+          - url
+          - valueString
+          properties:
+            fhir_comments:
+              type: array
+              items:
+                properties: {}
+            url:
+              type: string
+              minLength: 1
+            valueString:
+              type: string
+              minLength: 1
+      name:
+        type: string
+        minLength: 1
+      telecom:
+        type: array
+        uniqueItems: true
+        minItems: 1
+        items:
+          required:
+          - system
+          - value
+          properties:
+            system:
+              type: string
+              minLength: 1
+            value:
+              type: string
+              minLength: 1
+      address:
+        type: array
+        uniqueItems: true
+        minItems: 1
+        items:
+          required:
+          - city
+          - state
+          - postalCode
+          - country
+          - text
+          properties:
+            line:
+              type: array
+              items:
+                properties: {}
+            city:
+              type: string
+              minLength: 1
+            state:
+              type: string
+              minLength: 1
+            postalCode:
+              type: string
+              minLength: 1
+            country:
+              type: string
+              minLength: 1
+            text:
+              type: string
+              minLength: 1
+    required:
+    - resourceType
+    - id
+    - text
+    - extension
+    - name
+    - telecom
+    - address
+  Error:
+    type: object
+    required: [ detail ]
+    properties:
+      code:
+        type: string
+        description: Static error code. This value will not change for a particular type of error
+      detail:
+        type: string
+        description: Informative error detail message. This value may change over time
+  ErrorResponse:
+    type: object
+    required: [errors]
+    properties:
+      errors:
+        description: Errors conforming to JSON API errors format http://jsonapi.org/format/#error-objects
+        type: array
+        items:
+          $ref: "#/definitions/Error"
