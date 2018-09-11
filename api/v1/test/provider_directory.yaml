@@ -2,16 +2,16 @@ swagger: "2.0"
 info:
   version: 1.2.3
   title: Oculo Provider Directory API
-host: k7r7r6k5si.execute-api.ap-southeast-2.amazonaws.com
-basePath: /test
+host: awseb-e-u-AWSEBLoa-1EFV7YJY5NKXD-624272279.ap-southeast-2.elb.amazonaws.com
+basePath: /
 schemes:
-  - https
+  - http
 consumes:
   - application/json
 produces:
   - application/json
 paths:
-  "/organisation":
+  "/organisations":
     get:
       tags:
       - Organization
@@ -142,6 +142,9 @@ definitions:
               minLength: 1
       name:
         type: string
+        minLength: 1
+      distance:
+        type: integer
         minLength: 1
       telecom:
         type: array
