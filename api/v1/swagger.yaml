@@ -259,8 +259,6 @@ definitions:
       current_medication:
         type: string
         description: Current Medication
-        items:
-          type: string
       eye_drop_intolerance:
         type: string
         description: Eye Drop Tollerance
@@ -270,8 +268,6 @@ definitions:
       allergies:
         type: string
         description: Allergies
-        items:
-          type: string
       medicare_irn:
         type: string
         description: Medicare IRN
