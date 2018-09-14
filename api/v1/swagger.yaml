@@ -257,7 +257,7 @@ definitions:
         type: string
         description: Other Medical History
       current_medication:
-        type: array
+        type: string
         description: Current Medication
         items:
           type: string
@@ -268,7 +268,7 @@ definitions:
         type: string
         description: Family/Social History
       allergies:
-        type: array
+        type: string
         description: Allergies
         items:
           type: string
