@@ -390,12 +390,6 @@ definitions:
           - Mild-Moderate NPDR
           - Severe NPDR
           - PDR
-      macular_oedema_right:
-        type: boolean
-        description: Macular Oedema Right Eye
-      macular_oedema_left:
-        type: boolean
-        description: Macular Oedema Left Eye
       cataract_description_right:
         type: string
         description: Cataract Description Right Eye
