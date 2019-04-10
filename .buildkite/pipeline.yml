@@ -4,4 +4,4 @@ env:
 
 steps:
   - label: ":cargo: Prepare to build"
-    command: echo "Prepare to build Swagger"
+    command: env | grep AWS
