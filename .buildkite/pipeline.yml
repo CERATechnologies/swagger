@@ -7,4 +7,7 @@ steps:
     command: env | grep AWS
 
   - label: ":rocket: Deploy"
+    plugins:
+      - cultureamp/aws-assume-role#v0.1.0:
+          role: "arn:aws:iam::544757391075:role/role-sts-oculo-continuous-integration"
     command: aws s3 sync . s3://swagger.oculo.com.au/ --delete --acl public-read
