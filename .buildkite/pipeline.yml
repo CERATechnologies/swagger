@@ -5,3 +5,6 @@ env:
 steps:
   - label: ":cargo: Prepare to build"
     command: env | grep AWS
+
+  - label: ":rocket: Deploy"
+    command: aws s3 sync . s3://swagger.oculo.com.au/ --delete --acl public-read
