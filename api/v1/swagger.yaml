@@ -540,12 +540,15 @@ definitions:
       allergies:
         type: string
         description: Allergies
+      government_health_number:
+        type: string
+        description: The patient's health care number, region specific
       medicare_irn:
         type: string
-        description: Medicare IRN
+        description: Medicare IRN - DEPRECATED
       medicare_card_number:
         type: string
-        description: Medicare Number
+        description: Medicare Number - DEPRECATED
       providers:
         type: array
         items:
