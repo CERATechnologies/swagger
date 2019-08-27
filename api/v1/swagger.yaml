@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.2.4
+  version: 1.3.0
   title: Oculo API
 host: api.oculo.com.au
 basePath: /api/v1
@@ -155,14 +155,38 @@ definitions:
         description: Original referral request payload
         $ref: "#/definitions/ReferralRequestPayload"
   ReferralRequestPayload:
-    required: [sender_system, patient_request]
+    required:
+      - sender_system
+      - patient_request
+      - practice_role
     properties:
+      reasons:
+        type: array
+        description: "Reasons for referral"
+        items:
+          type: string
+        enum:
+          - CATARACT
+          - GLAUCOMA
+          - DIABETES
+          - MEDICAL_RETINA
+          - OTHER
+      urgency:
+        type: string
+        description: "Urgency of referral. Determines the usage of some clinical_data keys"
+        enum:
+          - ROUTINE
+          - URGENT
+          - VERY_URGENT
+      message:
+        type: string
+        description: The referral message
       sender_system:
         type: string
         description: Identifier of sending system - Socrates
       sender_system_references:
-        type: object
         description: Sending system's reference to this referral - this can be a json object or a string
+        $ref: "#/definitions/SenderSystemReferences"
       patient_request:
         description: Patient details
         $ref: "#/definitions/PatientRequest"
@@ -172,9 +196,248 @@ definitions:
       clinical_data:
         description: Detailed clinical data for the referral
         $ref: "#/definitions/ClinicalData"
-      message:
+    example:
+      reasons:
+        - CATARACT
+        - GLAUCOMA
+      urgency: ROUTINE
+      message: "A new referral for a patient"
+      sender_system: SOCRATES
+      sender_system_references:
+        onward_referral_request: "Refer to Eye Department - Urgent"
+        reasons:
+          - "Anterior Eye/Corneal"
+          - "Glaucoma Related"
+        current_sight_test_date: "2019-08-16"
+        previous_va_test_date: "2018-08-16"
+        gp_action_info: ONWARD_REFERRAL
+        pneumo: true
+        applanation_tonometer: false
+        observations:
+          right_eye_sph: "-3"
+          right_eye_cyl: "-0.25"
+          right_eye_axis: "120"
+          right_eye_prism_h: ""
+          right_eye_prism_v: ""
+          right_eye_add: "+1.0"
+          left_eye_sph: "-3"
+          left_eye_cyl: "-0.25"
+          left_eye_axis: "120"
+          left_eye_prism_h: ""
+          left_eye_prism_v: ""
+          left_eye_add: "+1.0"
+          right_eye_disc_appearance: ""
+          left_eye_disc_appearance: ""
+          right_eye_visual_field: ABNORMAL
+          left_eye_visual_field: NOT_DONE
+      patient_request:
+        title: Mr
+        first_name: John
+        surname: Smith
+        date_of_birth: "2001-01-16"
+        sex: male
+        street_address: 1 Smith St
+        suburb: Westminster
+        postcode: SW1A 2AA
+        country_code: GB
+        email_address: jsmith@mail.com
+        contact_number: "+44 20 7925 0918"
+        hypertension: true
+        asthma: true
+        diabetes: true
+        diabetes_year_diagnosed: 2016
+        diabetes_type: II
+        diabetes_hba1c: 49.7
+        diabetes_control: Good
+        other_pmh: "hypercholesterolemia"
+        allergies: "No allergies"
+        current_medication: "BP, chol, insulin, aspirin"
+        eye_drop_intolerance: "None"
+        family_social_history: "No relevant issues"
+        government_health_number: "450 557 7104"
+        providers:
+          -
+            role: GP
+            title: "Dr"
+            first_name: "Jane"
+            surname: "Kirk"
+            practice:
+              name: "Kirk GPs"
+              address_line_1: "Floor 1"
+              address_line_2: "1 Smith St"
+              suburb: "Westminster"
+              state: ""
+              postcode: "SW1A 2AA"
+              phone: "+44 20 7925 0918"
+              fax: "+44 20 7925 0918"
+              email: "jkirk@mail.com"
+              website: ""
+      practice_role:
+        industry_reference: "ID-XYZ"
+        organisation_reference: "ABC-789"
+      clinical_data:
+        surgical_history: "LE IOL 2-3 yrs ago in Spain"
+        va_blind_control_right: true
+        va_blind_control_left: false
+        va_blindness_right: "HM"
+        va_blindness_left: ""
+        va_correction_right: "Aided"
+        va_correction_left: "Unaided"
+        normal_va_right: ""
+        normal_va_left: "9"
+        patient_va_right: ""
+        patient_va_left: "6"
+        patient_va_right_modifier: ""
+        patient_va_left_modifier: "+"
+        refraction_right: "-3 -0.25 120 +1"
+        refraction_left: "-3 -0.25 120 +1"
+        central_corneal_thickness_right: 550
+        central_corneal_thickness_left: 550
+        recent_vision_change_right: false
+        recent_vision_change_left: true
+        other_risk_factors: "possible glaucoma"
+        current_iop_right: 16
+        current_iop_left: 14
+        max_iop_right: 17
+        max_iop_left: 17
+        family_history_of_glaucoma: true
+        gonio_findings_right: "moderate 0.5"
+        gonio_findings_left: "moderate 0.5"
+        diabetic_retinopathy_right: "PDR"
+        diabetic_retinopathy_left: "Mild-Moderate NPDR"
+        desired_refraction_right: "plano 0"
+        desired_refraction_left: "0"
+        cataract_description_right: "Clear Lens / early haze"
+        cataract_description_left: "Clear Lens / early haze"
+        change_on_amsler_right: false
+        change_on_amsler_left: true
+        retinal_findings_right: "RETINA:All Quadrants Checked Flat/Even Pigmentation, MAC:Normal Reflex, ON:SL BIO LARGE DISC / CUP ; TAPERD EDGE, OCT ONL OU, VESSELS:Normal, VIT:Clear"
+        retinal_findings_left: "RETINA:All Quadrants Checked Flat/Even Pigmentation, MAC:Normal Reflex, ON:SL BIO LARGE DISC / CUP ; TAPERD EDGE, OCT ONL OU, VESSELS:Normal, VIT:Clear"
+        amd_right: "Early"
+        amd_left: "New Onset Wet"
+
+  SenderSystemReferences:
+    type: object
+    properties:
+      onward_referral_request:
         type: string
-        description: The referral message
+        description: "Sending system's urgency. Maps to Urgency"
+        enum:
+          - "Refer to Eye Department - Urgent"
+          - "Refer to Eye Department - Routine"
+          - "Refer to Orthoptic Department"
+          - "Refer to LVA Clinic Service"
+          - "GP to Manage"
+          - "Refer to Eye Department - Same Day"
+          - "Direct referral Optometry to Ophthalmology"
+          - "Notification of Examination Outcome"
+          - "Optometrist to Monitor/Manage"
+          - "Patient told to contact GP"
+          - "Patient sent to Eye Casualty"
+      reasons:
+        type: array
+        description: "Sending system's list of reasons for referral. Maps to Reasons"
+        items:
+          type: string
+        enum:
+          - Wet AMD/Macula Service
+          - Anterior Eye/Corneal
+          - General Ophthalmology
+          - Binocular Anomaly/Paediatric Ophth
+          - Unexplained Finding (see notes)
+          - Glaucoma Related
+          - Neuro Ophthalmology/Unexplained Headaches
+          - Diabetic Ophthalmology
+          - Vitreo-Retinal
+          - Cataract/Post-cataract
+          - Oculoplastics
+          - Follow Up Information
+      current_sight_test_date:
+        type: string
+        description: "ISO-8601 date format"
+      previous_va_test_date:
+        type: string
+        description: "ISO-8601 date format"
+      gp_action_info:
+        type: string
+        description: ""
+        enum:
+          - ONWARD_REFERRAL
+          - GP_INFORMATION
+      pneumo:
+        type: bool
+        description: ""
+        enum:
+          - true
+          - false
+      applanation_tonometer:
+        type: bool
+        description: ""
+        enum:
+          - true
+          - false
+      observations:
+        description: ""
+        $ref: "#/definitions/SenderSystemReferencesObservations"
+  SenderSystemReferencesObservations:
+    type: object
+    properties:
+      right_eye_sph:
+        type: string
+        description: ""
+      right_eye_cyl:
+        type: string
+        description: ""
+      right_eye_axis:
+        type: string
+        description: ""
+      right_eye_prism_h:
+        type: string
+        description: ""
+      right_eye_prism_v:
+        type: string
+        description: ""
+      right_eye_add:
+        type: string
+        description: ""
+      left_eye_sph:
+        type: string
+        description: ""
+      left_eye_cyl:
+        type: string
+        description: ""
+      left_eye_axis:
+        type: string
+        description: ""
+      left_eye_prism_h:
+        type: string
+        description: ""
+      left_eye_prism_v:
+        type: string
+        description: ""
+      left_eye_add:
+        type: string
+        description: ""
+      right_eye_disc_appearance:
+        type: string
+        description: ""
+      left_eye_disc_appearance:
+        type: string
+        description: ""
+      right_eye_visual_field:
+        type: string
+        description: ""
+        enum:
+          - ABNORMAL
+          - NORMAL
+          - NOT_DONE
+      left_eye_visual_field:
+        type: string
+        description: ""
+        enum:
+          - ABNORMAL
+          - NORMAL
+          - NOT_DONE
   Link:
     required: [href]
     type: object
@@ -196,7 +459,7 @@ definitions:
         description: Surname
       date_of_birth:
         type: string
-        description: Date of birth (dd/mm/yyyy)
+        description: Date of birth in iso-8601 date format
       sex:
         type: string
         description: Sex
@@ -228,12 +491,21 @@ definitions:
       hypertension:
         type: boolean
         description: Patient has hypertension
+        enum:
+          - true
+          - false
       asthma:
         type: boolean
         description: Patient has asthma
+        enum:
+          - true
+          - false
       diabetes:
         type: boolean
         description: Patient has diabetes
+        enum:
+          - true
+          - false
       diabetes_year_diagnosed:
         type: string
         description: The year the patient was diagnosed with diabetes
@@ -279,10 +551,9 @@ definitions:
         items:
           $ref: "#/definitions/Provider"
   PracticeRole:
-    required: [
-      industry_reference,
-      organisation_reference
-    ]
+    required:
+      - industry_reference
+      - organisation_reference
     properties:
       industry_reference:
         type: string
@@ -313,9 +584,15 @@ definitions:
       va_blind_control_right:
         type: boolean
         description: VA Blindess Right Eye (Less than 6/60)
+        enum:
+          - true
+          - false
       va_blind_control_left:
         type: boolean
         description: VA Blindess Left Eye (Less than 6/60)
+        enum:
+          - true
+          - false
       va_blindness_right:
         type: string
         description: VA Blindess Right Eye  Value (Less than 6/60)
@@ -399,6 +676,9 @@ definitions:
       family_history_of_glaucoma:
         type: boolean
         description: Family History of Glaucoma
+        enum:
+          - true
+          - false
       gonio_findings_right:
         type: string
         description: Gonio Findings Right Eye
@@ -420,15 +700,27 @@ definitions:
       recent_vision_change_right:
         type: boolean
         description: Recent Vision Change Right Eye
+        enum:
+          - true
+          - false
       recent_vision_change_left:
         type: boolean
         description: Recent Vision Change Left Eye
+        enum:
+          - true
+          - false
       change_on_amsler_right:
         type: boolean
         description: Change on Amsler Right Eye
+        enum:
+          - true
+          - false
       change_on_amsler_left:
         type: boolean
         description: Change on Amsler Left Eye
+        enum:
+          - true
+          - false
       retinal_findings_right:
         type: string
         description: Retinal Findings Right Eye
@@ -452,6 +744,9 @@ definitions:
           - Late with Atrophy
           - New Onset Wet
   Provider:
+    required:
+      - first_name
+      - surname
     properties:
       role:
         type: string
@@ -468,6 +763,8 @@ definitions:
       practice:
         $ref: "#/definitions/Practice"
   Practice:
+    required:
+      - name
     properties:
       name:
         type: string
