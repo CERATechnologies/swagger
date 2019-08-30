@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.3.0
+  version: 1.3.1
   title: Oculo API
 host: api.oculo.com.au
 basePath: /api/v1
@@ -160,6 +160,9 @@ definitions:
       - patient_request
       - practice_role
     properties:
+      encounter_id:
+          type: string
+          description: An id from external system
       reasons:
         type: array
         description: "Reasons for referral"
@@ -197,6 +200,7 @@ definitions:
         description: Detailed clinical data for the referral
         $ref: "#/definitions/ClinicalData"
     example:
+      encounter_id: "ID123"
       reasons:
         - CATARACT
         - GLAUCOMA
