@@ -162,7 +162,7 @@ definitions:
     properties:
       encounter_id:
           type: string
-          description: An id from external system
+          description: "Unique appointment identifier"
       reasons:
         type: array
         description: "Reasons for referral"
@@ -218,12 +218,16 @@ definitions:
         pneumo: true
         applanation_tonometer: false
         observations:
+          right_eye_vision: ""
+          right_eye_near_va: ""
           right_eye_sph: "-3"
           right_eye_cyl: "-0.25"
           right_eye_axis: "120"
           right_eye_prism_h: ""
           right_eye_prism_v: ""
           right_eye_add: "+1.0"
+          left_eye_vision: ""
+          leftt_eye_near_va: ""
           left_eye_sph: "-3"
           left_eye_cyl: "-0.25"
           left_eye_axis: "120"
@@ -387,6 +391,12 @@ definitions:
   SenderSystemReferencesObservations:
     type: object
     properties:
+      right_eye_vision:
+        type: string
+        description: ""
+      right_eye_near_va:
+        type: string
+        description: ""
       right_eye_sph:
         type: string
         description: ""
@@ -403,6 +413,12 @@ definitions:
         type: string
         description: ""
       right_eye_add:
+        type: string
+        description: ""
+      left_eye_vision:
+        type: string
+        description: ""
+      left_eye_near_va:
         type: string
         description: ""
       left_eye_sph:
