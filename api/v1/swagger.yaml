@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.3.1
+  version: 1.3.2
   title: Oculo API
 host: api.oculo.com.au
 basePath: /api/v1
@@ -218,6 +218,9 @@ definitions:
         gp_action_info: ONWARD_REFERRAL
         pneumo: true
         applanation_tonometer: false
+        patient_record: true
+        visual_fields: true
+        photographs: true
         observations:
           right_eye_vision: ""
           right_eye_near_va: ""
@@ -373,19 +376,37 @@ definitions:
         description: "ISO-8601 date format"
       gp_action_info:
         type: string
-        description: ""
+        description: "This text will appear in the referral letter to inform the recipient of the required action."
         enum:
           - ONWARD_REFERRAL
           - GP_INFORMATION
       pneumo:
         type: bool
-        description: ""
+        description: "This text will appear in the referral letter untitled box, adjacent to the Intra-Ocular Pressures."
         enum:
           - true
           - false
       applanation_tonometer:
         type: bool
-        description: ""
+        description: "This text will appear in the referral letter untitled box, adjacent to the Intra-Ocular Pressures."
+        enum:
+          - true
+          - false
+      patient_record:
+        type: bool
+        description: "This text will appear in the referral letter to inform the recipient a copy of the patient record is enclosed with the referral letter. Multiple enclosures are separated by a forward slash."
+        enum:
+          - true
+          - false
+      visual_fields:
+        type: bool
+        description: "This text will appear in the referral letter to inform the recipient a copy a visual fields is enclosed with the referral letter. Multiple enclosures are separated by a forward slash."
+        enum:
+          - true
+          - false
+      photographs:
+        type: bool
+        description: "This text will appear in the referral letter to inform the recipient a copy of photographs are enclosed with the referral letter. Multiple enclosures are separated by a forward slash."
         enum:
           - true
           - false
