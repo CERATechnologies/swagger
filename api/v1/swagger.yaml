@@ -240,8 +240,7 @@ definitions:
           left_eye_add: "+1.0"
           right_eye_disc_appearance: ""
           left_eye_disc_appearance: ""
-          right_eye_visual_field: ABNORMAL
-          left_eye_visual_field: NOT_DONE
+          visual_fields: ABNORMAL
       patient_request:
         title: Mr
         first_name: John
@@ -470,14 +469,7 @@ definitions:
       left_eye_disc_appearance:
         type: string
         description: ""
-      right_eye_visual_field:
-        type: string
-        description: ""
-        enum:
-          - ABNORMAL
-          - NORMAL
-          - NOT_DONE
-      left_eye_visual_field:
+      visual_fields:
         type: string
         description: ""
         enum:
