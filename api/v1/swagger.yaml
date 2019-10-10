@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.3.3
+  version: 1.3.4
   title: Oculo API
 host: api.oculo.com.au
 basePath: /api/v1
@@ -216,8 +216,11 @@ definitions:
         current_sight_test_date: "2019-08-16"
         previous_va_test_date: "2018-08-16"
         gp_action_info: ONWARD_REFERRAL
-        enclosed: "Visual Fields / Photographs"
-        iop_flag: "Applanation Tonometer / Pneumo"
+        pneumo: true
+        applanation_tonometer: false
+        patient_record: true
+        visual_fields: true
+        photographs: true
         observations:
           right_eye_vision: ""
           right_eye_near_va: ""
@@ -235,8 +238,8 @@ definitions:
           left_eye_prism_h: ""
           left_eye_prism_v: ""
           left_eye_add: "+1.0"
-          right_eye_disc_appearance: ""
-          left_eye_disc_appearance: ""
+          right_eye_disc_appearance: "yes"
+          left_eye_disc_appearance: "no"
           visual_fields: ABNORMAL
       patient_request:
         title: Mr
@@ -376,12 +379,36 @@ definitions:
         enum:
           - ONWARD_REFERRAL
           - GP_INFORMATION
-      enclosed:
-        type: string
-        description: "This text will appear in the referral letter to inform the recipient of enclosed information with the referral letter. Multiple enclosures are separated by a forward slash."
-      iop_flag:
-        type: string
+      pneumo:
+        type: bool
         description: "This text will appear in the referral letter untitled box, adjacent to the Intra-Ocular Pressures."
+        enum:
+          - true
+          - false
+      applanation_tonometer:
+        type: bool
+        description: "This text will appear in the referral letter untitled box, adjacent to the Intra-Ocular Pressures."
+        enum:
+          - true
+          - false
+      patient_record:
+        type: bool
+        description: "This text will appear in the referral letter to inform the recipient a copy of the patient record is enclosed with the referral letter. Multiple enclosures are separated by a forward slash."
+        enum:
+          - true
+          - false
+      visual_fields:
+        type: bool
+        description: "This text will appear in the referral letter to inform the recipient a copy a visual fields is enclosed with the referral letter. Multiple enclosures are separated by a forward slash."
+        enum:
+          - true
+          - false
+      photographs:
+        type: bool
+        description: "This text will appear in the referral letter to inform the recipient a copy of photographs are enclosed with the referral letter. Multiple enclosures are separated by a forward slash."
+        enum:
+          - true
+          - false
       observations:
         description: ""
         $ref: "#/definitions/SenderSystemReferencesObservations"
