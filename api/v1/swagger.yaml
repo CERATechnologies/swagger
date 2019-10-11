@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.3.4
+  version: 1.3.5
   title: Oculo API
 host: api.oculo.com.au
 basePath: /api/v1
@@ -156,6 +156,8 @@ definitions:
         $ref: "#/definitions/ReferralRequestPayload"
   ReferralRequestPayload:
     required:
+      - reasons
+      - urgency
       - sender_system
       - patient_request
       - practice_role
