@@ -15,7 +15,7 @@ paths:
   /v1/auth:
     post:
       tags:
-        - /v1
+        - /v1 [legacy]
       summary: Authenticate against the Oculo API using your access credentials
       parameters:
         - name: Credentials
@@ -52,7 +52,7 @@ paths:
   /v1/referral_requests:
     post:
       tags:
-        - /v1
+        - /v1 [legacy]
       summary: Submit a referral
       parameters:
         - name: referral_request
@@ -87,7 +87,7 @@ paths:
   /v1/referral_requests/{id}.json:
     get:
       tags:
-        - /v1
+        - /v1 [legacy]
       summary: Retrieve a referral request
       parameters:
         - name: id
@@ -845,6 +845,7 @@ definitions:
     properties:
       text:
         type: string
+        example: "text associated the codings"
       coding:
         type: array
         items:
@@ -857,10 +858,13 @@ definitions:
     properties:
       code:
         type: string
+        example: '896601'
       system:
         type: string
+        example: http://snomed.info/sct
       display:
         type: string
+        example: "Left eye"
   Observation:
     type: object
     description: https://www.hl7.org/fhir/observation.html
@@ -883,6 +887,7 @@ definitions:
       effectiveDateTime:
         description: the time at which the observation became effective (cannot be in the future)
         type: string
+        example: '2023-06-27T17:04:20+04:00'
       valueQuantity:
         type: object
         schema:
@@ -911,21 +916,27 @@ definitions:
         enum: [official, usual, temp, secondary, old]
       system:
         type: string
+        example: http://oculo.com.au/Observation/
       value:
         type: string
+        example: 000000000000-000000-0000-0000
   Quantity:
     type: object
     description: https://www.hl7.org/fhir/datatypes.html#Quantity
     properties:
       value:
         type: string
+        example: "0.89"
       unit:
         type: string
+        example: MmHg
   Reference:
     type: object
     description: https://www.hl7.org/fhir/references.html#Reference
     properties:
       reference:
         type: string
+        example: app.oculo.com.au/Patient/000000000000-000000-0000-0000
       display:
         type: string
+        example: Mr Test Patient
