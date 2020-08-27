@@ -3,16 +3,19 @@ info:
   version: 1.3.6
   title: Oculo API
 host: api.oculo.com.au
-basePath: /api/v1
+basePath: /api
 schemes:
   - https
 consumes:
   - application/json
 produces:
   - application/json
+
 paths:
-  /auth:
+  /v1/auth:
     post:
+      tags:
+        - /v1
       summary: Authenticate against the Oculo API using your access credentials
       parameters:
         - name: Credentials
@@ -46,8 +49,10 @@ paths:
           description: An internal server error occurred
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /referral_requests:
+  /v1/referral_requests:
     post:
+      tags:
+        - /v1
       summary: Submit a referral
       parameters:
         - name: referral_request
@@ -79,9 +84,10 @@ paths:
             $ref: "#/definitions/ErrorResponse"
       security:
         - bearer: []
-
-  /referral_requests/{id}.json:
+  /v1/referral_requests/{id}.json:
     get:
+      tags:
+        - /v1
       summary: Retrieve a referral request
       parameters:
         - name: id
@@ -108,6 +114,97 @@ paths:
             $ref: "#/definitions/ErrorResponse"
       security:
         - bearer: []
+  /auth/v1/tokens:
+    post:
+      tags:
+        - /auth/v1
+      summary: Authenticate using your access credentials to generate an authentication token
+      parameters:
+        - name: access_key
+          in: body
+          description: Your Oculo API access key
+          required: true
+          schema:
+            $ref: "#/definitions/ClientCredentials"
+        - name: secret_key
+          in: body
+          description: Your Oculo API secret_key key
+          required: true
+          schema:
+            $ref: "#/definitions/ClientCredentials"
+      responses:
+        200:
+          description: New authentication token created
+          schema:
+            type: object
+            required: [token]
+            title: Authentication
+            properties:
+              token:
+                description: Auth token to be used in subsequent requests
+                type: string
+        401:
+          description: The given client credentials were not authenticated
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /auth/v1/verify:
+    get:
+      tags:
+        - /auth/v1
+      summary: Verify that a token is still valid for use on subsequent calls
+      responses:
+        204:
+          description: The token is still considered valid
+        401:
+          description: The given client credentials were not authenticated
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - bearer: []
+  /fhir/Patient/{patient_uuid}/Observation:
+    post:
+      tags:
+        - /fhir
+      summary: Create an Observation associated with a known Patient
+      parameters:
+        - name: patient_uuid
+          in: query
+          description: The identifier for the patient associated with the observation
+          required: true
+          type: string
+        - name: observation
+          in: body
+          description: The observation to be created
+          required: true
+          schema:
+            $ref: "#/definitions/Observation"
+      responses:
+        201:
+          description: The Observation was created
+          headers:
+            Location:
+              schema:
+                type: string
+              description: the URI of the created resource
+        401:
+          description: The Observation does not conform to the FHIR specifications
+          schema:
+            $ref: "#/definitions/OperationOutcome"
+        404:
+          description: The Patient resource was not found
+        409:
+          description: The Observation identifier already exists (attempted to create a duplicate Observation)
+          schema:
+            $ref: "#/definitions/OperationOutcome"
+        422:
+          description: The FHIR Observation is not a valid Oculo Observation
+          schema:
+            $ref: "#/definitions/OperationOutcome"
+        500:
+          description: An internal server error occurred
+      security:
+        - bearer: []
+
 
 securityDefinitions:
   bearer:
@@ -115,7 +212,17 @@ securityDefinitions:
     description: A bearer token in the format "Bearer auth_token"
     name: authorization
     in: header
+
 definitions:
+  ClientCredentials:
+    required: [access_key, secret_key]
+    properties:
+      access_key:
+        description: Your Oculo API access key
+        type: string
+      secret_key:
+        description: Your Oculo API secret key
+        type: string
   Credentials:
     required: [client_id, access_key, secret_key]
     properties:
@@ -289,7 +396,6 @@ definitions:
         retinal_findings_left: "RETINA:All Quadrants Checked Flat/Even Pigmentation, MAC:Normal Reflex, ON:SL BIO LARGE DISC / CUP ; TAPERD EDGE, OCT ONL OU, VESSELS:Normal, VIT:Clear"
         amd_right: "Early"
         amd_left: "New Onset Wet"
-
   SenderSystemReferences:
     type: object
     properties:
@@ -708,3 +814,114 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/Error"
+  OperationOutcome:
+    type: object
+    description: https://www.hl7.org/fhir/operationoutcome.html
+    properties:
+      resourceType:
+        type: string
+      issue:
+        type: array
+        items:
+          type: object
+          schema:
+            $ref: "#/definitions/Issue"
+  Issue:
+    type: object
+    properties:
+      code:
+        type: string
+        description: https://www.hl7.org/fhir/valueset-issue-type.html
+      severity:
+        type: string
+        enum: [error, fatal, warning, information]
+      details:
+        type: object
+        schema:
+          $ref: "#/definitions/CodeableConcept"
+  CodeableConcept:
+    type: object
+    description: https://www.hl7.org/fhir/datatypes.html#CodeableConcept
+    properties:
+      text:
+        type: string
+      coding:
+        type: array
+        items:
+          type: object
+          schema:
+            $ref: "#/definitions/Coding"
+  Coding:
+    type: object
+    description: https://www.hl7.org/fhir/datatypes.html#Coding
+    properties:
+      code:
+        type: string
+      system:
+        type: string
+      display:
+        type: string
+  Observation:
+    type: object
+    description: https://www.hl7.org/fhir/observation.html
+    required: [identifier, status, code, effectiveDateTime, "value[x]", method, "subject", "bodySite"]
+    properties:
+      identifier:
+        type: array
+        items:
+          type: object
+          schema:
+            $ref: "#/definitions/Identifier"
+      status:
+        type: string
+        enum: [final, desc]
+      code:
+        type: object
+        schema:
+          $ref: "#/definitions/CodeableConcept"
+      effectiveDateTime:
+        description: the time at which the observation became effective (cannot be in the future)
+        type: string
+      valueQuantity:
+        type: object
+        schema:
+          $ref: "#/definitions/Quantity"
+      method:
+        type: object
+        schema:
+          $ref: "#/definitions/CodeableConcept"
+      subject:
+        type: object
+        schema:
+          $ref: "#/definitions/Reference"
+      bodySite:
+        type: object
+        schema:
+          $ref: "#/definitions/CodeableConcept"
+  Identifier:
+    type: object
+    descriptiona: https://www.hl7.org/fhir/datatypes.html#Identifier
+    properties:
+      use:
+        type: string
+        enum: [official, usual, temp, secondary, old]
+      system:
+        type: string
+      value:
+        type: string
+  Quantity:
+    type: object
+    description: https://www.hl7.org/fhir/datatypes.html#Quantity
+    properties:
+      value:
+        type: string
+      unit:
+        type: string
+  Reference:
+    type: object
+    description: https://www.hl7.org/fhir/references.html#Reference
+    properties:
+      reference:
+        type: string
+      display:
+        type: string
