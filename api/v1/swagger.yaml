@@ -823,9 +823,7 @@ definitions:
       issue:
         type: array
         items:
-          type: object
-          schema:
-            $ref: "#/definitions/Issue"
+          $ref: "#/definitions/Issue"
   Issue:
     type: object
     properties:
@@ -845,7 +843,7 @@ definitions:
     properties:
       text:
         type: string
-        example: "text associated the codings"
+        example: "text description"
       coding:
         type: array
         items:
