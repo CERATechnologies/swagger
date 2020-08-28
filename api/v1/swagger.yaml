@@ -834,9 +834,7 @@ definitions:
         type: string
         enum: [error, fatal, warning, information]
       details:
-        type: object
-        schema:
-          $ref: "#/definitions/CodeableConcept"
+        $ref: "#/definitions/CodeableConcept"
   CodeableConcept:
     type: object
     description: https://www.hl7.org/fhir/datatypes.html#CodeableConcept
@@ -876,31 +874,26 @@ definitions:
       code:
         type: object
         description: a code that identifies what the observation represents. Must be a valid SNOMED code for Visual Acuity or Intraocular Pressure.
-        schema:
-          $ref: "#/definitions/CodeableConcept"
+        $ref: "#/definitions/CodeableConcept"
       effectiveDateTime:
         description: the time at which the observation became effective (cannot be in the future)
         type: string
         example: '2023-06-27T17:04:20+04:00'
       valueQuantity:
         type: object
-        schema:
-          $ref: "#/definitions/Quantity"
+        $ref: "#/definitions/Quantity"
       method:
         type: object
         description: The method by which the observation was collected.
-        schema:
-          $ref: "#/definitions/CodeableConcept"
+        $ref: "#/definitions/CodeableConcept"
       subject:
         type: object
         description: The unique reference for the observation being created. Duplicates will not be accepted.
-        schema:
-          $ref: "#/definitions/Reference"
+        $ref: "#/definitions/Reference"
       bodySite:
         type: object
         description: The body site of the observation. Must be the SNOMED code for either left or right eye.
-        schema:
-          $ref: "#/definitions/CodeableConcept"
+        $ref: "#/definitions/CodeableConcept"
   Identifier:
     type: object
     description: https://www.hl7.org/fhir/datatypes.html#Identifier
