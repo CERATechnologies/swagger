@@ -181,6 +181,8 @@ paths:
       responses:
         201:
           description: The Observation was created
+          schema:
+            $ref: "#/definitions/FhirResourceCreated"
           headers:
             Location:
               schema:
@@ -927,3 +929,13 @@ definitions:
       display:
         type: string
         example: Mr Test Patient
+  FhirResourceCreated:
+    type: object
+    description: the response payload when a fhir resource is created
+    properties:
+      status:
+        type: string
+        example: created
+      uri:
+        type: string
+        example: http://oculo.com.au/Observation/123
