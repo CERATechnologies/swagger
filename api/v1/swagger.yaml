@@ -168,7 +168,7 @@ paths:
       summary: Create an Observation associated with a known Patient
       parameters:
         - name: patient_uuid
-          in: query
+          in: path
           description: The identifier for the patient associated with the observation
           required: true
           type: string
@@ -849,9 +849,7 @@ definitions:
       coding:
         type: array
         items:
-          type: object
-          schema:
-            $ref: "#/definitions/Coding"
+          $ref: "#/definitions/Coding"
   Coding:
     type: object
     description: https://www.hl7.org/fhir/datatypes.html#Coding
@@ -873,9 +871,7 @@ definitions:
       identifier:
         type: array
         items:
-          type: object
-          schema:
-            $ref: "#/definitions/Identifier"
+          $ref: "#/definitions/Identifier"
       status:
         type: string
         enum: [final, registered, preliminary, amended]
@@ -909,7 +905,7 @@ definitions:
           $ref: "#/definitions/CodeableConcept"
   Identifier:
     type: object
-    descriptiona: https://www.hl7.org/fhir/datatypes.html#Identifier
+    description: https://www.hl7.org/fhir/datatypes.html#Identifier
     properties:
       use:
         type: string
