@@ -185,8 +185,7 @@ paths:
             $ref: "#/definitions/FhirResourceCreated"
           headers:
             Location:
-              schema:
-                type: string
+              type: string
               description: the URI of the created resource
         401:
           description: The Observation does not conform to the FHIR specifications
