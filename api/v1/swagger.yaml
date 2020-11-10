@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.3.6
+  version: 1.4.0
   title: Oculo API
 host: api.oculo.com.au
 basePath: /api
@@ -161,6 +161,17 @@ paths:
             $ref: "#/definitions/ErrorResponse"
       security:
         - bearer: []
+  /fhir/Patient:
+    post:
+      tags:
+        - /fhir
+      summary: Create a new patient
+      parameters:
+        - name: patient
+          in: body
+          description: The patient to be created
+          schema:
+            $ref: "#/definitions/Patient"
   /fhir/Patient/{patient_uuid}/Observation:
     post:
       tags:
@@ -187,7 +198,7 @@ paths:
             Location:
               type: string
               description: the URI of the created resource
-        401:
+        400:
           description: The Observation does not conform to the FHIR specifications
           schema:
             $ref: "#/definitions/OperationOutcome"
@@ -201,6 +212,98 @@ paths:
           description: The FHIR Observation is not a valid Oculo Observation
           schema:
             $ref: "#/definitions/OperationOutcome"
+        500:
+          description: An internal server error occurred
+      security:
+        - bearer: []
+
+  /fhir/Patient/{patient_uuid}/Media:
+    post:
+      tags:
+        - /fhir
+      summary: Create a media resource associated with a known Patient
+      parameters:
+        - name: patient_uuid
+          in: path
+          description: The identifier for the patient associated with the media
+          required: true
+          type: string
+        - name: media
+          in: body
+          description: The media to be created
+          required: true
+          schema:
+            $ref: "#/definitions/Media"
+      responses:
+        201:
+          description: The Media was created
+          schema:
+            $ref: "#/definitions/FhirResourceCreated"
+          headers:
+            Location:
+              type: string
+              description: the URI of the created resource
+        400:
+          description: The Media does not conform to the FHIR specifications
+          schema:
+            $ref: "#/definitions/OperationOutcome"
+        404:
+          description: The Patient resource was not found
+        409:
+          description: The Media identifier already exists (attempted to create a duplicate Observation)
+          schema:
+            $ref: "#/definitions/OperationOutcome"
+        422:
+          description: The FHIR Media is not a valid Oculo Media
+          schema:
+            $ref: "#/definitions/OperationOutcome"
+        500:
+          description: An internal server error occurred
+      security:
+        - bearer: []
+  /media/bundles:
+    post:
+      tags:
+        - /media
+      summary: Create a media bundle for uploading media to Oculo
+      parameters:
+        - name: bundle
+          in: body
+          description: Optional description in *Markdown*
+          required: true
+          schema:
+            $ref: '#/definitions/BundleNew'
+      responses:
+        201:
+          description: The bundle was created
+          schema:
+            $ref: "#/definitions/Bundle"
+        400:
+          description: There was a problem with the data received
+        422:
+          description: The media bundle data was not valid
+        500:
+          description: An internal server error occurred
+      security:
+        - bearer: []
+
+  /media/bundles/{bundleId}:
+    get:
+      tags:
+        - /media
+      summary: Retrieve details about a media bundle
+      parameters:
+        - name: bundleId
+          in: url
+          type: string
+          required: true
+      responses:
+        200:
+          description: The bundle
+          schema:
+            $ref: "#/definitions/Bundle"
+        404:
+          description: Bundle not found
         500:
           description: An internal server error occurred
       security:
@@ -857,9 +960,67 @@ definitions:
       system:
         type: string
         example: http://snomed.info/sct
-      display:
+  FHIRName:
+    type: object
+    description: FHIR name type
+    required: [family, given]
+    properties:
+      prefix:
         type: string
-        example: "Left eye"
+      family:
+        type: string
+      given:
+        type: string
+  FHIRAddress:
+    type: object
+    description: FHIR address type
+    properties:
+      line:
+        type: array
+        items:
+          type: string
+      city:
+        type: string
+      state:
+        type: string
+      postalCode:
+        type: string
+      country:
+        type: string
+  FHIRContact:
+    type: object
+    required: [system, value]
+    properties:
+      system:
+        type: string
+        enum: [phone,fax,email,pager,url,sms,other]
+      value:
+        type: string
+  Patient:
+    type: object
+    description: https://www.hl7.org/fhir/patient.html
+    required: [identifier, name, gender, birthDate]
+    properties:
+      identifier:
+        type: array
+        items:
+          $ref: "#/definitions/Identifier"
+      name:
+        type: object
+        $ref: "#/definitions/FHIRName"
+      gender:
+        type: string
+        enum: [male, female, other, unknown]
+      birthDate:
+        type: date
+      address:
+        type: object
+        $ref: "#/definitions/FHIRAddress"
+      telecom:
+        type: array
+        items:
+          $ref: "#/definitions/FHIRContact"
+
   Observation:
     type: object
     description: https://www.hl7.org/fhir/observation.html
@@ -904,7 +1065,7 @@ definitions:
         enum: [official, usual, temp, secondary, old]
       system:
         type: string
-        example: http://oculo.com.au/Observation/
+        example: http://api.oculo.com.au/api/fhir/Observation/
       value:
         type: string
         example: 000000000000-000000-0000-0000
@@ -937,4 +1098,97 @@ definitions:
         example: created
       uri:
         type: string
-        example: http://oculo.com.au/Observation/123
+        example: http://api.oculo.com.au/api/fhir/{resource_type}/123
+  Attachment:
+    type: object
+    required: [contentType]
+    properties:
+      contentType:
+        type: string
+        description: This value set includes all possible codes from BCP-13 (http://tools.ietf.org/html/bcp13)
+        example: image/jpeg
+      data:
+        type: string
+        description: Data inline, base64ed
+      url:
+        type: string
+        description: Uri where the data can be found
+      size:
+        type: integer
+        description: Number of bytes of content (if url provided)
+  Media:
+    type: object
+    description: https://www.hl7.org/fhir/media.html
+    required: [status, modality, subject, bodySite, content]
+    properties:
+      status:
+        type: string
+        enum: [preparation, in-progress, not-done, on-hold, stopped, completed, entered-in-error, unknown]
+      type:
+        type: object
+        description: Is the media a video, image or audio
+        $ref: "#/definitions/CodeableConcept"
+      modality:
+        type: object
+        description: The DICOM modality
+        $ref: "#/definitions/CodeableConcept"
+      createdDateTime:
+        description: the time at which the media was created
+        type: string
+        example: '2023-06-27T17:04:20+04:00'
+      subject:
+        type: object
+        description: The Patient resource that this media resource relates to
+        $ref: "#/definitions/Reference"
+      bodySite:
+        type: object
+        description: The body site of the media. Must be the SNOMED code for either left or right eye.
+        $ref: "#/definitions/CodeableConcept"
+      deviceName:
+        type: string
+        description: Name of the device/manufacturer
+      height:
+        type: integer
+        description: Height of the image in pixels (photo/video)
+      width:
+        type: integer
+        description: Width of the image in pixels (photo/video)
+      content:
+        type: object
+        description: Actual Media - reference or data
+        $ref: "#/definitions/Attachment"
+  BundleNew:
+    type: object
+    description: A bundle of media that has or will be uploaded
+    required: [patientId, mediaIds]
+    properties:
+      patientId:
+        type: string
+        example: "P37238937200-3733-AB3033"
+      mediaIds:
+        type: array
+        items:
+          type: string
+          example: "1.1.3723932727.37828272"
+  Bundle:
+    type: object
+    description: Media bundle
+    properties:
+      bundleId:
+        type: string
+      patientId:
+        type: string
+      media:
+        type: object
+        properties:
+          id:
+            type: string
+            example: 1.1.3723932727.37828272
+          url:
+            type: string
+            example: https://s3.aws.com/3839383?Signature=33Hdi3...&Expires=...
+          expiry:
+            type: integer
+            example: 1555531131
+
+
