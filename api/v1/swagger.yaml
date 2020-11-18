@@ -1179,16 +1179,18 @@ definitions:
       patientId:
         type: string
       media:
-        type: object
-        properties:
-          id:
-            type: string
-            example: 1.1.3723932727.37828272
-          url:
-            type: string
-            example: https://s3.aws.com/3839383?Signature=33Hdi3...&Expires=...
-          expiry:
-            type: integer
-            example: 1555531131
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              example: 1.1.3723932727.37828272
+            url:
+              type: string
+              example: https://s3.aws.com/3839383?Signature=33Hdi3...&Expires=...
+            expiry:
+              type: integer
+              example: 1555531131
 
 
