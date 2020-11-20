@@ -287,13 +287,13 @@ paths:
       security:
         - bearer: []
 
-  /media/bundles/{bundleId}:
+  /media/bundles/{bundle_id}:
     get:
       tags:
         - /media
       summary: Retrieve details about a media bundle
       parameters:
-        - name: bundleId
+        - name: bundle_id
           in: url
           type: string
           required: true
@@ -1160,12 +1160,12 @@ definitions:
   BundleNew:
     type: object
     description: A bundle of media that has or will be uploaded
-    required: [patientId, mediaIds]
+    required: [patient_id, media_ids]
     properties:
-      patientId:
+      patient_id:
         type: string
         example: "P37238937200-3733-AB3033"
-      mediaIds:
+      media_ids:
         type: array
         items:
           type: string
@@ -1174,9 +1174,9 @@ definitions:
     type: object
     description: Media bundle
     properties:
-      bundleId:
+      bundle_id:
         type: string
-      patientId:
+      patient_id:
         type: string
       media:
         type: array
