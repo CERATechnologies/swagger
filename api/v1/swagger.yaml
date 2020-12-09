@@ -172,6 +172,9 @@ paths:
           description: The patient to be created
           schema:
             $ref: "#/definitions/Patient"
+      responses:
+        201:
+          description: The Patient was created
   /fhir/Patient/{patient_uuid}/Observation:
     post:
       tags:
@@ -294,7 +297,7 @@ paths:
       summary: Retrieve details about a media bundle
       parameters:
         - name: bundle_id
-          in: url
+          in: path
           type: string
           required: true
       responses:
@@ -1012,7 +1015,8 @@ definitions:
         type: string
         enum: [male, female, other, unknown]
       birthDate:
-        type: date
+        type: string
+        format: date
       address:
         type: object
         $ref: "#/definitions/FHIRAddress"
@@ -1176,21 +1180,34 @@ definitions:
     properties:
       bundle_id:
         type: string
+        format: uuid
       patient_id:
         type: string
+        description: the provided patient_id
       media:
         type: array
+        description: an array of media objects for the provided media_ids and their respective presigned urls for upload
         items:
           type: object
           properties:
             id:
               type: string
+              description: the id of the media object
               example: 1.1.3723932727.37828272
             url:
               type: string
+              format: uri
+              description: a time limited presigned url to upload this media object
               example: https://s3.aws.com/3839383?Signature=33Hdi3...&Expires=...
-            expiry:
-              type: integer
-              example: 1555531131
+            expires_at:
+              type: string
+              format: date-time
+              description: the expiration date-time of the presigned url
+              example: 2019-10-12T07:20:50.52Z
+      redirect_url:
+        type: string
+        format: uri
+        description: the Oculo web address to redirect the user to access the bundle
+        example: https://app.oculo.co/bundles/ae18b2ac-...?token=a57196...
 
 
